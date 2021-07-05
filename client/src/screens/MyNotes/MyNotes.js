@@ -1,13 +1,7 @@
 import React from "react";
 import MainScreen from "../../components/MainScreen";
 import { Link } from "react-router-dom";
-import {
-  Button,
-  Card,
-  Badge,
-  Accordion,
-  AccordionCollapse,
-} from "react-bootstrap";
+import { Button, Card, Badge, Accordion } from "react-bootstrap";
 import notes from "../../data/notes";
 const MyNotes = () => {
   const deleteHandler = (id) => {
