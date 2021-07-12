@@ -1,14 +1,17 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import MainScreen from "../../components/MainScreen";
 import { Form, Button, Col, Row } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import "./LoginScreen.css";
 import axios from "axios";
-const LoginScreen = () => {
+import Loading from "../../components/Loading";
+import ErrorMessage from "../../components/ErrorMessage";
+const LoginScreen = ({ history }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
+
   const submitHandler = async (e) => {
     e.preventDefault();
     try {
@@ -30,17 +33,17 @@ const LoginScreen = () => {
       localStorage.setItem("userInfo", JSON.stringify(data));
       setLoading(false);
     } catch (error) {
+      console.log(error.response.data.message);
       setError(error.response.data.message);
+      setLoading(false);
     }
   };
   return (
     <MainScreen title="LOGIN">
       <div className="loginContainer">
-        <Form
-          onSubmit={(e) => {
-            submitHandler(e);
-          }}
-        >
+        {error && <ErrorMessage variant="danger">{error}</ErrorMessage>}
+        {loading && <Loading />}
+        <Form onSubmit={submitHandler}>
           <Form.Group controlId="formBasicEmail">
             <Form.Label>Email address</Form.Label>
             <Form.Control
