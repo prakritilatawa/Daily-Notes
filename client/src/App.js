@@ -1,6 +1,6 @@
 import "./App.css";
 import Footer from "./components/footer/footer";
-import Header from "./components/Header/header";
+import Header from "./components/Header/Header";
 import "./bootstrap.min.css";
 import LandingPage from "./screens/LandingPage/LandingPage";
 import { BrowserRouter, Route } from "react-router-dom";
