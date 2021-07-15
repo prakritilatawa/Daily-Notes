@@ -1,11 +1,14 @@
-import React, { useState } from "react";
-import MainScreen from "../../components/MainScreen";
+import { useEffect,useState } from "react";
 import { Form, Button, Col, Row } from "react-bootstrap";
-import { Link } from "react-router-dom";
-import "./RegisterScreen.css";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useHistory } from "react-router-dom";
+import { register } from "../../actions/userActions";
 import ErrorMessage from "../../components/ErrorMessage";
 import Loading from "../../components/Loading";
-import axios from "axios";
+import MainScreen from "../../components/MainScreen";
+// import "./RegisterScreen.css";
+
+
 const RegisterScreen = () => {
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
@@ -16,37 +19,30 @@ const RegisterScreen = () => {
   const [confirmpassword, setConfirmPassword] = useState("");
   const [message, setMessage] = useState(null);
   const [picMessage, setPicMessage] = useState(null);
-  const [error, setError] = useState(false);
-  const [loading, setLoading] = useState(false);
+
+const dispatch = useDispatch();
+
+const userRegister = useSelector((state) => state.userRegister);
+const { loading, error, userInfo } = userRegister;
+
+const history = useHistory();
+
+useEffect(() => {
+  if(userInfo) {
+    history.push("/mynotes");
+  }
+},[history, userInfo]);
+
   const submitHandler = async (e) => {
     e.preventDefault();
 
-    if (password !== confirmpassword) {
+    if(password!==confirmpassword){
       setMessage("Passwords do not match");
+
     } else {
-      setMessage(null);
-      try {
-        const config = {
-          header: { "Content-type": "application/json" },
-        };
-        setLoading(true);
-        const { data } = await axios.post(
-          "http://localhost:5000/api/users",
-          {
-            name,
-            pic,
-            email,
-            password,
-          },
-          config
-        );
-        setLoading(false);
-        localStorage.setItem("userInfo", JSON.stringify(data));
-      } catch (error) {
-        setError(error.response.data.message);
-        setLoading(false);
-      }
+      dispatch(register(name, email, password, pic));
     }
+
   };
   const postDetails = (pics) => {
     if (!pics) {
