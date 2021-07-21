@@ -2,8 +2,10 @@ const express = require("express");
 const notes = require("../client/src/data/notes");
 const dotenv = require("dotenv");
 const connectDB = require("./config/db");
-const userRoutes = require("./routes/userRoutes");
-const noteRoutes = require("./routes/noteRoutes");
+// const userRoutes = require("./routes/userRoutes");
+// const noteRoutes = require("./routes/noteRoutes");
+
+const { noteRoutes, userRoutes } = require("./Routes");
 
 const { notFound, errorHandler } = require("./middlewares/errorMiddlewares");
 const cors = require("cors");
